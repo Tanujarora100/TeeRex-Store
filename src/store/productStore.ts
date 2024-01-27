@@ -1,4 +1,4 @@
-import create from "zustand";
+import {create} from "zustand";
 
 import ProductStoreType from "../types/ProductStoreType";
 import ProductType from "../types/ProductType";
