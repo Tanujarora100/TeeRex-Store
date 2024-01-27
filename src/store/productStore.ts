@@ -1,4 +1,4 @@
-import {create} from "zustand";
+import { create } from "zustand";
 
 import ProductStoreType from "../types/ProductStoreType";
 import ProductType from "../types/ProductType";
@@ -8,6 +8,9 @@ const useProductStore = create<ProductStoreType>((set) => ({
   products: [] as ProductType[],
   loading: false,
   error: null,
+  selectedColor: "",
+  selectedGender: "",
+  selectedPriceRange: "",
   fetchProducts: async () => {
     try {
       const response = await fetch(API_URL);
@@ -28,20 +31,20 @@ const useProductStore = create<ProductStoreType>((set) => ({
       });
     }
   },
+  setSelectedColor: (color: string) => {
+    set({ selectedColor: color });
+  },
+  setSelectedGender: (gender: string) => {
+    set({ selectedGender: gender });
+  },
+  setSelectedPriceRange: (priceRange: string) => {
+    set({ selectedPriceRange: priceRange });
+  },
   getProducts() {
     return this.products;
   },
   getProductById(productId) {
     return this.products.find((item) => item.id === productId);
-  },
-  getProductsByCategory(category) {
-    return this.products.filter((item) => item.type === category);
-  },
-  getProductsByColor(color) {
-    return this.products.filter((item) => item.color === color);
-  },
-  getProductsByGender(gender) {
-    return this.products.filter((item) => item.gender === gender);
   },
 }));
 
