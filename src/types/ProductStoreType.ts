@@ -1,20 +1,16 @@
+import FilterState from "./FilterStateType";
 import ProductType from "./ProductType";
 
 interface ProductStoreType {
   products: ProductType[];
   loading: boolean;
   error: string | null;
-  selectedColor: string;
-  selectedGender: string;
-  selectedPriceRange: string;
-
+  filters: FilterState; 
   fetchProducts: () => Promise<void>;
 
   getProducts: () => ProductType[];
   getProductById: (productId: number) => ProductType | undefined;
-  setSelectedColor: (color: string) => void;
-  setSelectedGender: (gender: string) => void;
-  setSelectedPriceRange: (priceRange: string) => void;
+  setFilter: (filterType: string, value: string | null) => void; // Set a filter value
 }
 
 export default ProductStoreType;

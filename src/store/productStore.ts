@@ -3,14 +3,14 @@ import { create } from "zustand";
 import ProductStoreType from "../types/ProductStoreType";
 import ProductType from "../types/ProductType";
 import { API_URL } from "../utils/Helpers";
+import FilterState from "../types/FilterStateType";
 
 const useProductStore = create<ProductStoreType>((set) => ({
   products: [] as ProductType[],
   loading: false,
   error: null,
-  selectedColor: "",
-  selectedGender: "",
-  selectedPriceRange: "",
+  filters: FilterStateType,
+
   fetchProducts: async () => {
     try {
       const response = await fetch(API_URL);

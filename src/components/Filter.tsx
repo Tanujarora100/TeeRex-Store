@@ -3,8 +3,11 @@ import useProductStore from "../store/productStore";
 import Checkbox from "./CheckBox";
 
 const Filter = () => {
-  const { setSelectedColor, setSelectedGender, setSelectedPriceRange } =
-    useProductStore();
+  const {
+    setSelectedColor,
+    setSelectedGender,
+    setSelectedPriceRange,
+  } = useProductStore();
 
   // Create state variables to manage the checked state for each filter option
   const [colorFilters, setColorFilters] = useState({

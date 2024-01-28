@@ -3,41 +3,23 @@ import useProductStore from "../store/productStore";
 import Product from "./Product";
 import Filter from "./Filter";
 import ProductType from "../types/ProductType";
-import ProductStoreType from "../types/ProductStoreType";
 
 const ProductList = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const productState = useProductStore.getState();
-  const { selectedColor, selectedGender, selectedPriceRange } =
-    useProductStore<ProductStoreType>;
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        await productState.fetchProducts();
-        setLoading(false);
-        console.log("Fetched products");
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setLoading(false);
-      }
-    };
+  const { selectedColor, selectedGender, selectedPriceRange } = useProductStore;
 
-    fetchData();
-  }, [productState]);
-
-  const products = productState.getProducts();
-
-  const filterProducts = (products: ProductType[]) => {
+  // Declare the filterProducts function outside of useEffect
+  const filterProducts = (products: ProductType[]): ProductType[] => {
     let filteredProducts = [...products];
     if (selectedColor) {
       filteredProducts = filteredProducts.filter(
-        (product) => product.color == selectedColor
+        (product) => product.color === selectedColor
       );
     }
     if (selectedGender) {
       filteredProducts = filteredProducts.filter(
-        (product) => product.gender == selectedGender
+        (product) => product.gender === selectedGender
       );
     }
     if (selectedPriceRange) {
@@ -61,7 +43,29 @@ const ProductList = () => {
           break;
       }
     }
+    return filteredProducts; // Make sure to return the filtered products
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        await productState.fetchProducts();
+        setLoading(false);
+        console.log("Fetched products");
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const products = productState.getProducts();
+
+  const finalProducts: ProductType[] = filterProducts(products);
+
   return (
     <div className="flex flex-wrap justify-center items-start p-4">
       <div className="w-auto md:w-1/4">
@@ -74,7 +78,7 @@ const ProductList = () => {
           <div>No products found</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {products.map((product) => (
+            {finalProducts.map((product) => (
               <Product key={product.id} {...product} />
             ))}
           </div>
